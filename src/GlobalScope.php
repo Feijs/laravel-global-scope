@@ -1,18 +1,21 @@
-<?php namespace Sofa\GlobalScope;
+<?php
 
-use Illuminate\Database\Eloquent\Model;
+namespace Sofa\GlobalScope;
+
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Query\Expression;
-use Illuminate\Database\Query\Builder as Query;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ScopeInterface;
+use Illuminate\Database\Query\Builder as Query;
+use Illuminate\Database\Query\Expression;
 
 abstract class GlobalScope implements ScopeInterface
 {
     /**
      * Apply the scope to a given Eloquent query builder.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $builder
-     * @param  \Illuminate\Database\Eloquent\Model $model
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     * @param \Illuminate\Database\Eloquent\Model   $model
+     *
      * @return void
      */
     abstract public function apply(Builder $builder, Model $model);
@@ -20,8 +23,9 @@ abstract class GlobalScope implements ScopeInterface
     /**
      * Remove the scope from the given Eloquent query builder.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $builder
-     * @param  \Illuminate\Database\Eloquent\Model $model
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     * @param \Illuminate\Database\Eloquent\Model   $model
+     *
      * @return void
      */
     public function remove(Builder $builder, Model $model)
@@ -50,7 +54,8 @@ abstract class GlobalScope implements ScopeInterface
     /**
      * Get an array of the constraints applied by the scope.
      *
-     * @param  \Illuminate\Database\Eloquent\Model $model
+     * @param \Illuminate\Database\Eloquent\Model $model
+     *
      * @return array
      */
     protected function getScopeConstraints(Model $model)
@@ -65,8 +70,9 @@ abstract class GlobalScope implements ScopeInterface
     /**
      * Remove where clause from the query builder.
      *
-     * @param  \Illuminate\Database\Query\Builder $query
-     * @param  integer $key
+     * @param \Illuminate\Database\Query\Builder $query
+     * @param int                                $key
+     *
      * @return void
      */
     protected function removeWhere(Query $query, $key)
@@ -77,9 +83,10 @@ abstract class GlobalScope implements ScopeInterface
     /**
      * Remove bindings from the query builder.
      *
-     * @param  \Illuminate\Database\Query\Builder $query
-     * @param  integer $key
-     * @param  integer $count
+     * @param \Illuminate\Database\Query\Builder $query
+     * @param int                                $key
+     * @param int                                $count
+     *
      * @return void
      */
     protected function removeBindings(Query $query, $key, $count)
@@ -94,8 +101,9 @@ abstract class GlobalScope implements ScopeInterface
     /**
      * Get number of bindings provided for a where clause.
      *
-     * @param  array  $where
-     * @return integer
+     * @param array $where
+     *
+     * @return int
      */
     protected function countBindings(array $where)
     {
@@ -103,22 +111,16 @@ abstract class GlobalScope implements ScopeInterface
 
         if ($this->isHasWhere($where, $type)) {
             return substr_count($where['column'].$where['value'], '?');
-
         } elseif (in_array($type, ['basic', 'date', 'year', 'month', 'day'])) {
             return (int) !($where['value'] instanceof Expression);
-
         } elseif (in_array($type, ['null', 'notnull'])) {
             return 0;
-
         } elseif ($type === 'between') {
             return 2;
-
         } elseif (in_array($type, ['in', 'notin'])) {
             return count($where['values']);
-
         } elseif ($type === 'raw') {
             return substr_count($where['sql'], '?');
-
         } elseif (in_array($type, ['nested', 'sub', 'exists', 'notexists', 'insub', 'notinsub'])) {
             return count($where['query']->getBindings());
         }
@@ -127,9 +129,10 @@ abstract class GlobalScope implements ScopeInterface
     /**
      * Determine whether where clause is an eloquent 'has' subquery.
      *
-     * @param  array  $where
-     * @param  string $type
-     * @return boolean
+     * @param array  $where
+     * @param string $type
+     *
+     * @return bool
      */
     protected function isHasWhere($where, $type)
     {
