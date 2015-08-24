@@ -1,11 +1,14 @@
-<?php namespace Sofa\Eloquent\Scopes;
+<?php
 
-use Sofa\GlobalScope\GlobalScope;
-use Illuminate\Database\Eloquent\Model;
+namespace Sofa\Eloquent\Scopes;
+
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Sofa\GlobalScope\GlobalScope;
 
 /**
- * Example definition of a Global Scope based on
+ * Example definition of a Global Scope based on.
+ *
  * @link https://github.com/jarektkaczyk/laravel5-global-scope-example/blob/laravel5-global-scope-example/Sofa/Eloquent/Scopes/PublishedScope.php
  */
 class PublishedScope extends GlobalScope

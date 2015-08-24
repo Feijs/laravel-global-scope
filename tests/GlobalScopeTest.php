@@ -21,38 +21,38 @@ class GlobalScopeTest extends PHPUnit_Framework_TestCase
 
         $expectedWheres = [
             [
-                'type'      => "Basic",
-                'column'    => "baz",
-                'operator'  => "=",
+                'type'      => 'Basic',
+                'column'    => 'baz',
+                'operator'  => '=',
                 'value'     => 3,
-                'boolean'   => 'and'
+                'boolean'   => 'and',
             ],
             [
-                'type'      => "NotNull",
-                'column'    => "quux",
-                'boolean'   => 'or'
+                'type'      => 'NotNull',
+                'column'    => 'quux',
+                'boolean'   => 'or',
             ],
             [
-                'type'      => "Basic",
+                'type'      => 'Basic',
                 'column'    => $nestedQuery,
-                'operator'  => ">=",
+                'operator'  => '>=',
                 'value'     => $nestedValue,
-                'boolean'   => 'and'
+                'boolean'   => 'and',
             ],
         ];
 
         $scopedQuery = m::mock('Illuminate\Database\Query\Builder');
         $scopedQuery->wheres = [[
-            'type'      => "Basic",
-            'column'    => "foo",
-            'operator'  => "=",
+            'type'      => 'Basic',
+            'column'    => 'foo',
+            'operator'  => '=',
             'value'     => 2,
-            'boolean'   => 'and'
+            'boolean'   => 'and',
         ]];
 
         $query = m::mock('Illuminate\Database\Query\Builder');
         $query->wheres = array_merge($expectedWheres, $scopedQuery->wheres);
-        $query->shouldReceive('getRawBindings')->once()->andReturn(['where' => [3, 'x', 'y', 'z', 2] ]);
+        $query->shouldReceive('getRawBindings')->once()->andReturn(['where' => [3, 'x', 'y', 'z', 2]]);
         $query->shouldReceive('setBindings')->once()->andReturn([3, 'x', 'y', 'z'], 'where');
 
         $builder = m::mock('Illuminate\Database\Eloquent\Builder');
